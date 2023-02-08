@@ -5,7 +5,9 @@ import com.example.practice.repository.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -15,13 +17,19 @@ public class StudentService {
     private StudentRepo studentRepo;
 
     //Create New student details
-    public String createStudent(Student student){
+    public Map<String, Object> createStudent(Student student){
         if(this.studentRepo.existsById(student.getId())){
-            return "Student already exists";
+            Map<String, Object> map = new HashMap<>();
+            map.put("status", false);
+            map.put("message", "Student already exists");
+            return map;
         }
         else{
             this.studentRepo.save(student);
-            return "Student details are saved.";
+            Map<String, Object> map = new HashMap<>();
+            map.put("status", true);
+            map.put("message", "Student details are saved.");
+            return map;
         }
     }
 
@@ -32,30 +40,40 @@ public class StudentService {
     }
 
     //delete student
-    public String deleteStudent(Integer id){
+    public Map<String, Object> deleteStudent(Integer id){
+        Map<String, Object> map = new HashMap<>();
         try{
             if(this.studentRepo.existsById(id)){
                 this.studentRepo.deleteById(id);
-                return "Student record deleted.";
+                map.put("status", true);
+                map.put("message", "Student record deleted.");
+                return map;
             }else {
                 throw new Exception("Student does not exists!");
             }
         } catch(Exception e){
-            return "Error deleting student.";
+            map.put("status", false);
+            map.put("message", e.getMessage());
+            return map;
         }
     }
 
     //update student
-    public String updateStudent(Student student){
+    public Map<String, Object> updateStudent(Student student){
+        Map<String, Object> map = new HashMap<>();
         try{
             if(this.studentRepo.existsById(student.getId())){
                 this.studentRepo.save(student);
-                return "Updated successfully.";
+                map.put("status", true);
+                map.put("message", "Updated successfully.");
+                return map;
             } else{
                 throw new Exception("Student not found!");
             }
         }catch(Exception e){
-            return "Error updating!";
+            map.put("status", false);
+            map.put("message", e.getMessage());
+            return map;
         }
     }
 

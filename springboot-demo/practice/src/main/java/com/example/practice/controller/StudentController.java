@@ -85,4 +85,14 @@ public class StudentController {
             return new ResponseEntity<>("No student found!", HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/getstudentbyage/{age}")
+    public ResponseEntity<?> getStudentByAge(@PathVariable Integer age){
+        List<Student> students = this.studentService.getStudentByAge(age);
+        if(students.size() < 1){
+            return new ResponseEntity<>("No student found!", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(students, HttpStatus.OK);
+        }
+    }
 }

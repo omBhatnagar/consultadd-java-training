@@ -82,4 +82,7 @@ public class StudentService {
         return this.studentRepo.findById(id);
     }
 
+    public List<Student> getStudentByAge(Integer age){
+        return this.studentRepo.findByAge(age);
+    }
 }

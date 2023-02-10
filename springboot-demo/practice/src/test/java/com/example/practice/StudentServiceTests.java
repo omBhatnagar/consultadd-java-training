@@ -63,4 +63,11 @@ public class StudentServiceTests {
         when(repo.existsById(1)).thenReturn(true);
         assertEquals(true, (Boolean) service.deleteStudent(1).get("status"));
     }
+
+    @Test
+    public void getStudentByAgeTest(){
+        Integer age = 21;
+        when(repo.findByAge(age)).thenReturn(Stream.of(new Student(1, "Om", 21, "A"), new Student(1, "Moe", 21, "A"), new Student(1, "Joe", 21, "A")).collect(Collectors.toList()));
+        assertEquals(3, service.getStudentByAge(21).size());
+    }
 }
